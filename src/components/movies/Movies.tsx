@@ -1,33 +1,37 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import _ from 'lodash';
+
+import {
+  Table,
+  Container,
+  Typography,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TablePagination,
+  Box,
+} from '@mui/material';
+
 import { setMovies, setTotalResult } from '../../store/slices/movieSlice';
 import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TablePagination from '@mui/material/TablePagination';
-import Box from '@mui/material/Box';
-import { useQuery } from '@tanstack/react-query';
-import { Container, Typography } from '@mui/material';
 import './Movies.scss';
-
-import _ from 'lodash';
 import Progress from '../progress/Progress';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
+// Enum for defining media types
 enum MediaType {
   MOVIE = 'movie',
   TV_SERIES = 'series',
@@ -50,6 +54,7 @@ const Movies = () => {
   const [type, setType] = useState('');
   const [page, setPage] = useState(0);
 
+  // Function to fetch movies from the API
   const fetchMovies = async (searchKeyword: string) => {
     const url = `${API_URL}?page=${
       page + 1
@@ -64,8 +69,10 @@ const Movies = () => {
     return moviesData.Search || [];
   };
 
+  // Using Lodash to debounce the fetchMovies function
   const debouncedFetchMovies = useRef(_.debounce(fetchMovies, 600)).current;
 
+  // Using useQuery to handle fetching movies with debouncing
   const {
     // data:movieData can be used instead of getting the data from the store
     // so I'm disabling the eslint rules for that line and keeping it

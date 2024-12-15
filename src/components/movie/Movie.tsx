@@ -10,13 +10,16 @@ import { useQuery } from '@tanstack/react-query';
 import './Movie.scss';
 import Progress from '../progress/Progress';
 
+// Define the interface for MovieProps
 interface MovieProps {
   id: string;
 }
 
+// Define constants for API URL and API KEY
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
+// Function to fetch movie details from the API
 const fetchMovieDetail = async (id: string) => {
   const url = `${API_URL}?i=${id}&apikey=${API_KEY}`;
   const response = await fetch(url);
@@ -26,9 +29,11 @@ const fetchMovieDetail = async (id: string) => {
   return response.json();
 };
 
+// Movie component
 const Movie = (props: MovieProps) => {
   const { id } = props;
 
+  // UseQuery hook to fetch movie data
   const {
     data: movieData,
     error,
@@ -38,9 +43,12 @@ const Movie = (props: MovieProps) => {
     queryFn: () => fetchMovieDetail(id),
   });
 
+  // Display progress if data is loading
   if (isLoading) return <Progress />;
+  // Display error if there's an error fetching data
   if (error) return <Typography>Error fetching movie details</Typography>;
 
+  // Display movie details if data is available
   return (
     <Container maxWidth='sm' sx={{ my: 4 }}>
       <Card sx={{ maxWidth: 500 }}>
