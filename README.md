@@ -1,6 +1,6 @@
 # Movies React - Typescript - Vite
 
-This is a small Movie project
+This is a small Movie project create with React + Vite.
 
 ## :hammer: Configured development tools:
 
